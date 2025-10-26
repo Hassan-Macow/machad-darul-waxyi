@@ -36,6 +36,7 @@ export default function SettingsPage() {
 
   useEffect(() => {
     loadUserProfile()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const loadUserProfile = async () => {
@@ -72,8 +73,8 @@ export default function SettingsPage() {
       
       setMessage('Profile updated successfully!')
       setTimeout(() => setMessage(''), 3000)
-    } catch (error: any) {
-      setMessage('Error updating profile: ' + error.message)
+    } catch (error) {
+      setMessage('Error updating profile: ' + (error instanceof Error ? error.message : 'Unknown error'))
     } finally {
       setLoading(false)
     }
@@ -105,8 +106,8 @@ export default function SettingsPage() {
       setNewPassword('')
       setConfirmPassword('')
       setTimeout(() => setMessage(''), 3000)
-    } catch (error: any) {
-      setMessage('Error updating password: ' + error.message)
+    } catch (error) {
+      setMessage('Error updating password: ' + (error instanceof Error ? error.message : 'Unknown error'))
     } finally {
       setLoading(false)
     }

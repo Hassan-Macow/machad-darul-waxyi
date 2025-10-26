@@ -23,6 +23,7 @@ export default function FinancePage() {
 
   useEffect(() => {
     fetchFinanceData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMonth])
 
   const fetchFinanceData = async () => {
@@ -49,8 +50,8 @@ export default function FinancePage() {
       const result = await supabaseApi.generateMonthlyFees(selectedMonth)
       setMessage(`Successfully generated fees! Created ${result.payments_created} payment records and updated ${result.finance_records_updated} class summaries.`)
       await fetchFinanceData()
-    } catch (error: any) {
-      setMessage('Error generating monthly fees: ' + error.message)
+    } catch (error) {
+      setMessage('Error generating monthly fees: ' + (error instanceof Error ? error.message : 'Unknown error'))
     } finally {
       setGeneratingFees(false)
       setTimeout(() => setMessage(''), 5000)
@@ -61,7 +62,7 @@ export default function FinancePage() {
     try {
       await supabaseApi.markPaymentStatus(paymentId, status)
       await fetchFinanceData()
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error updating payment:', error)
     }
   }
