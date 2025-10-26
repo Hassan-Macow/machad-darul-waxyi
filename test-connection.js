@@ -18,3 +18,4 @@ supabase.from('admins').select('*').then(result => {
 }).catch(error => {
   console.error('Supabase error:', error);
 });
+
