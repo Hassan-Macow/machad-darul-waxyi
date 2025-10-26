@@ -1,5 +1,5 @@
 import { supabase } from './supabase'
-import { Admin, Parent, Class, Student, DashboardStats, MonthlyIncome, Payment, FinanceSummary, PaymentDetails, MonthlyFeeGenerationResult, PaymentUpdateResult } from './types'
+import { Admin, Parent, Class, Student, DashboardStats, MonthlyIncome, FinanceSummary, PaymentDetails, MonthlyFeeGenerationResult, PaymentUpdateResult } from './types'
 import type { PostgrestError } from '@supabase/supabase-js'
 
 // Helper function to simulate async behavior (optional)
@@ -217,7 +217,7 @@ export const financeApi = {
     if (month) query = query.eq('month', month)
     const { data, error } = await query
     if (error) throw error
-    return (data || []) as any as FinanceSummary[]
+    return (data || []) as FinanceSummary[]
   }
 }
 

@@ -271,7 +271,7 @@ export default function FinancePage() {
                 No fees generated for {selectedMonth}
               </h3>
               <p className="text-gray-500 mb-4">
-                Click "Generate Monthly Fees" to create payment records for all active students.
+                Click &quot;Generate Monthly Fees&quot; to create payment records for all active students.
               </p>
             </div>
           )}
