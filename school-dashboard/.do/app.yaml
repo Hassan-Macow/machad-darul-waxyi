@@ -1,0 +1,31 @@
+name: school-dashboard
+region: nyc
+services:
+- name: web
+  environment_slug: node-js
+  github:
+    repo: sidowxyz/machad-darul-waxyi
+    branch: master
+    deploy_on_push: true
+  source_dir: school-dashboard
+  build_command: npm run build
+  run_command: npm start
+  envs:
+  - key: NEXT_PUBLIC_SUPABASE_URL
+    scope: RUN_TIME
+    type: SECRET
+  - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+    scope: RUN_TIME
+    type: SECRET
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  routes:
+  - path: /
+  health_check:
+    http_path: /
+    initial_timeout_seconds: 60
+    timeout_seconds: 30
+    success_threshold: 1
+    failure_threshold: 3
+
+
