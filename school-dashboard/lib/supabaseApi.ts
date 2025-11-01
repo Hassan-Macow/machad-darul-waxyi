@@ -1,5 +1,5 @@
 import { supabase } from './supabase'
-import { Admin, Parent, Class, Student, DashboardStats, MonthlyIncome, FinanceSummary, PaymentDetails, MonthlyFeeGenerationResult, PaymentUpdateResult } from './types'
+import { Admin, Parent, Class, Student, DashboardStats, MonthlyIncome, FinanceSummary, PaymentDetails, MonthlyFeeGenerationResult, PaymentUpdateResult, StudentOutstandingBalance } from './types'
 import type { PostgrestError } from '@supabase/supabase-js'
 
 // Helper function to simulate async behavior (optional)
@@ -218,6 +218,49 @@ export const financeApi = {
     const { data, error } = await query
     if (error) throw error
     return (data || []) as FinanceSummary[]
+  },
+
+  async getStudentOutstandingBalances(currentMonth?: string): Promise<StudentOutstandingBalance[]> {
+    // Fetch all unpaid payments
+    const { data: unpaidPayments, error } = await supabase
+      .from('payment_details')
+      .select('*')
+      .eq('status', 'unpaid')
+      .order('student_id', { ascending: true })
+      .order('month', { ascending: false })
+
+    if (error) throw error
+
+    // Group by student and calculate totals
+    const studentBalances: { [key: string]: StudentOutstandingBalance } = {}
+    
+    unpaidPayments.forEach((payment: PaymentDetails) => {
+      if (!studentBalances[payment.student_id]) {
+        studentBalances[payment.student_id] = {
+          student_id: payment.student_id,
+          student_name: payment.student_name,
+          parent_name: payment.parent_name,
+          parent_phone: payment.parent_phone,
+          class_name: payment.class_name,
+          total_outstanding: 0,
+          unpaid_months: []
+        }
+      }
+      
+      studentBalances[payment.student_id].total_outstanding += payment.amount
+      studentBalances[payment.student_id].unpaid_months.push(payment.month)
+      
+      // Track current month status if provided
+      if (currentMonth && payment.month === currentMonth) {
+        studentBalances[payment.student_id].current_month_status = 'unpaid'
+        studentBalances[payment.student_id].current_month_payment_id = payment.id
+      }
+    })
+    
+    return Object.values(studentBalances).map(balance => ({
+      ...balance,
+      unpaid_months: balance.unpaid_months.sort()
+    }))
   }
 }
 
@@ -273,5 +316,6 @@ export const supabaseApi = {
   generateMonthlyFees: financeApi.generateMonthlyFees,
   getPayments: financeApi.getPayments,
   markPaymentStatus: financeApi.markPaymentStatus,
-  getFinanceSummary: financeApi.getFinanceSummary
+  getFinanceSummary: financeApi.getFinanceSummary,
+  getStudentOutstandingBalances: financeApi.getStudentOutstandingBalances
 }
