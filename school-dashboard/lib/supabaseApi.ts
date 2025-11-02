@@ -318,4 +318,27 @@ export const supabaseApi = {
   markPaymentStatus: financeApi.markPaymentStatus,
   getFinanceSummary: financeApi.getFinanceSummary,
   getStudentOutstandingBalances: financeApi.getStudentOutstandingBalances
+} as const satisfies {
+  isAdmin: typeof adminApi.isAdmin
+  getAdminByEmail: typeof adminApi.getAdminByEmail
+  createAdmin: typeof adminApi.createAdmin
+  getParents: typeof parentsApi.getParents
+  addParent: typeof parentsApi.addParent
+  updateParent: typeof parentsApi.updateParent
+  deleteParent: typeof parentsApi.deleteParent
+  getClasses: typeof classesApi.getClasses
+  addClass: typeof classesApi.addClass
+  updateClass: typeof classesApi.updateClass
+  deleteClass: typeof classesApi.deleteClass
+  getStudents: typeof studentsApi.getStudents
+  addStudent: typeof studentsApi.addStudent
+  updateStudent: typeof studentsApi.updateStudent
+  deleteStudent: typeof studentsApi.deleteStudent
+  getDashboardStats: typeof dashboardApi.getDashboardStats
+  getMonthlyIncome: typeof dashboardApi.getMonthlyIncome
+  generateMonthlyFees: typeof financeApi.generateMonthlyFees
+  getPayments: typeof financeApi.getPayments
+  markPaymentStatus: typeof financeApi.markPaymentStatus
+  getFinanceSummary: typeof financeApi.getFinanceSummary
+  getStudentOutstandingBalances: typeof financeApi.getStudentOutstandingBalances
 }

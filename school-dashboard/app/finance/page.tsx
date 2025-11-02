@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { supabaseApi } from '@/lib/supabaseApi'
+import { supabaseApi } from '../../lib/supabaseApi'
 import { FinanceSummary, PaymentDetails, StudentOutstandingBalance } from '../../lib/types'
 import { DollarSign, Calendar, TrendingUp, CheckCircle2, XCircle, Plus, CreditCard, Search, Filter, ChevronLeft, ChevronRight, FileText, AlertTriangle } from 'lucide-react'
 
